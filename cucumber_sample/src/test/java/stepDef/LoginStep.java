@@ -8,6 +8,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -15,11 +17,16 @@ import io.cucumber.java.en.When;
 public class LoginStep {
     WebDriver driver;
 
+    @Before
+    public void statting ()
+    {
+    	driver = new ChromeDriver();
+    	driver.manage().window().maximize();
+   driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+    }
     @Given("I am in the Login Page")
     public void i_am_in_the_swag_labs_login_page() {
-        driver = new ChromeDriver();
-        	driver.manage().window().maximize();
-       driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        
        	 driver.get("https://www.saucedemo.com/");
     }
 
@@ -52,13 +59,18 @@ public class LoginStep {
     public void i_should_see_the_homepage() {
         WebElement page = driver.findElement(By.className("inventory_container"));
         Assert.assertTrue(page.isDisplayed(), "User is not on the homepage");
-        driver.quit();
+        
     }
 
     @Then("I should see the error message")
     public void i_should_see_the_error_message() {
         WebElement error = driver.findElement(By.xpath("//h3[@data-test='error']"));
         Assert.assertTrue(error.isDisplayed(), "Error message not displayed");
-        driver.quit();
+        
+    }
+    @After
+    public void end ()
+    {
+    	driver.quit();
     }
 }
